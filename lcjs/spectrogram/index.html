@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <script src="lcjs.iife.js"></script>
+    <script src="xydata.iife.js"></script>
+    <script>
+        const CONFIG = {
+            // NOTE: Columns = X Axis
+            columns: 50,
+            // NOTE: Rows = Z Axis
+            rows: 60,
+        }
+
+        const {
+            lightningChart,
+            SurfaceSeriesTypes3D,
+            ColorHSV,
+            ColorRGBA,
+            IndividualPointFill,
+            PalettedFill,
+            SolidFill,
+            LUT,
+            UIOrigins,
+            UIBackgrounds,
+            UIElementBuilders,
+            UILayoutBuilders,
+            emptyFill,
+            Themes
+        } = lcjs
+                
+        const {
+            createSpectrumDataGenerator
+        } = xydata
+
+        const chart3D = lightningChart().Chart3D()
+            .setTitle('Spectrogram surface chart')
+
+        const { rows, columns } = CONFIG
+        const surface = chart3D.addSurfaceSeries( {
+            type: SurfaceSeriesTypes3D.Grid,
+            rows,
+            columns,
+            start: { x: 0, z: 0 },
+            end: { x: columns, z: rows },
+            pixelate: true
+        } )
+            // NOTE: Wireframe is optional for competitors. Not a must have.
+            .setWireframeStyle( new SolidFill( { color: ColorRGBA( 0, 0, 0, 50 ) } ) )
+                
+        createSpectrumDataGenerator()
+            .setSampleSize( columns )
+            .setNumberOfSamples( rows )
+            .generate()
+            .toPromise()
+            .then(data => {
+                let iSample = 0
+                const addData = () => {
+                    iSample = (iSample + 1) % rows
+                    const sample = data[iSample]
+                    surface.addRow(1, 'y', [sample])
+
+                    setTimeout(addData, 100)
+                }
+                addData()
+            })
+
+    </script>
+</body>
+</html>
