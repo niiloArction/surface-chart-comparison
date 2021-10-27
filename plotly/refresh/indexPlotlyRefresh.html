@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+
+    <div id="tester" style="width:100%;height:100%;"></div>
+
+    <script src="plotly-2.4.2.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="xydata.iife.js"></script>
+    <script>
+
+        const CONFIG = {
+            columns: 50,
+            rows: 60,
+        }
+
+        const { rows, columns } = CONFIG
+
+        const {
+            createSpectrumDataGenerator
+        } = xydata
+
+        var data = [{
+            z: [],
+            type: 'surface',
+            showscale: false
+        }];
+
+        Plotly.newPlot('tester', data);
+
+        Promise.all(
+            [0, 1].map(_ => 
+            createSpectrumDataGenerator()
+                .setSampleSize( columns )
+                .setNumberOfSamples( rows )
+                .generate()
+                .toPromise()
+            )
+        ).then(dataSetsList => {
+
+            let iDataSet = 0
+
+            const changeDataSet = () => {
+
+                var z_data=[]
+
+                iDataSet = (iDataSet + 1) % dataSetsList.length
+
+                var new_data = {
+                    z:  [dataSetsList[iDataSet]]
+                }
+
+                Plotly.update('tester', new_data);
+            }
+
+            changeDataSet()
+
+            setInterval(changeDataSet, 500);
+            
+        })
+        
+    </script>
+</body>
+</html>
+
+
