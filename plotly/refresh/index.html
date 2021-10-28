@@ -13,7 +13,7 @@
 
         const CONFIG = {
             columns: 50,
-            rows: 60,
+            rows: 50,
         }
 
         const { rows, columns } = CONFIG
@@ -48,19 +48,19 @@
 
                 iDataSet = (iDataSet + 1) % dataSetsList.length
 
-                dataSetsList[iDataSet].forEach((element,i) => {
-                    data[0]['z'][i] = element;
-                });
+                var new_data = {
+                    z:  [dataSetsList[iDataSet]]
+                }
 
-                Plotly.redraw('tester');
+                Plotly.update('tester', new_data);
+                requestAnimationFrame(changeDataSet)
             }
-
             changeDataSet()
-
-            setInterval(changeDataSet, 500);
             
         })
         
     </script>
 </body>
 </html>
+
+

@@ -13,9 +13,9 @@
 
         const CONFIG = {
             // NOTE: Columns = X Axis
-            columns: 50,
+            columns: 100,
             // NOTE: Rows = Z Axis
-            rows: 60,
+            rows: 100,
         }
 
         const { rows, columns } = CONFIG
@@ -39,21 +39,21 @@
                 console.log(z_data);
                 
                 var data = [{
-                        z: z_data,
-                        type: 'surface'
-                        }];
+                    z: z_data,
+                    type: 'surface'
+                }];
 
                 var layout = {
-                title: 'Mt Bruno Elevation',
-                autosize: false,
-                width: 500,
-                height: 500,
-                margin: {
-                    l: 65,
-                    r: 50,
-                    b: 65,
-                    t: 90,
-                }
+                    title: 'Mt Bruno Elevation',
+                    autosize: false,
+                    width: 500,
+                    height: 500,
+                    margin: {
+                        l: 65,
+                        r: 50,
+                        b: 65,
+                        t: 90,
+                    }
                 };
                 Plotly.newPlot('tester', data, layout);
             })

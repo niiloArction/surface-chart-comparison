@@ -12,8 +12,8 @@
     <script>
 
         const CONFIG = {
-            columns: 50,
-            rows: 60,
+            columns: 200,
+            rows: 200,
         }
 
         const { rows, columns } = CONFIG
@@ -46,7 +46,7 @@
 
                 let iDataSet = 0
 
-                const changeDataSet = () => {
+                const appendData = () => {
 
                     data[0]['z'].push(dataSetsList[iDataSet])
 
@@ -58,9 +58,10 @@
                     
                     Plotly.redraw('tester')
                     
+                    requestAnimationFrame(appendData)
                 }
 
-                setInterval(changeDataSet, 100)
+                appendData()
 
                 
             })
