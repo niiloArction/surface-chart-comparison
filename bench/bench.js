@@ -4,8 +4,8 @@
 
   const { createSpectrumDataGenerator } = xydata;
   const promiseTestData1 = createSpectrumDataGenerator()
-    .setSampleSize(BENCHMARK_CONFIG.columns)
-    .setNumberOfSamples(BENCHMARK_CONFIG.rows)
+    .setSampleSize(BENCHMARK_CONFIG.sampleSize)
+    .setNumberOfSamples(BENCHMARK_CONFIG.sampleHistory)
     .generate()
     .toPromise();
 
@@ -28,7 +28,7 @@
   await BENCHMARK_IMPLEMENTATION.beforeStart();
 
   console.log("waiting couple frames ...");
-  for (let i = 0; i < 100; i += 1) {
+  for (let i = 0; i < 50; i += 1) {
     await new Promise((resolve) => requestAnimationFrame(resolve));
   }
 
@@ -38,5 +38,33 @@
     await BENCHMARK_IMPLEMENTATION.loadChart(testData1);
     const tLoadup = window.performance.now() - tStart;
     console.log(`\t${tLoadup.toFixed(1)}ms`);
+
+    if (BENCHMARK_CONFIG.mode === "append") {
+      let iSample = BENCHMARK_CONFIG.sampleHistory - 1;
+      let tPrev = window.performance.now();
+      let newDataModulus = 0;
+      const onEveryFrame = () => {
+        const tNow = window.performance.now();
+        const tDelta = tNow - tPrev;
+        let newSamplesCountFloat =
+          BENCHMARK_CONFIG.appendNewSamplesPerSecond * (tDelta / 1000) +
+          newDataModulus;
+        const newSamplesCount = Math.floor(newSamplesCountFloat);
+
+        if (newSamplesCount > 0) {
+          const newSamples = [];
+          for (let i = 0; i < newSamplesCount; i += 1) {
+            newSamples.push(testData1[(iSample + i) % testData1.length]);
+          }
+          BENCHMARK_IMPLEMENTATION.appendData(newSamples);
+          tPrev = tNow;
+          iSample += newSamplesCount;
+          newDataModulus = newSamplesCountFloat % 1;
+        }
+
+        requestAnimationFrame(onEveryFrame);
+      };
+      onEveryFrame();
+    }
   });
 })();

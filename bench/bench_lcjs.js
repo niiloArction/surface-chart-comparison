@@ -1,4 +1,6 @@
 const BENCHMARK_IMPLEMENTATION = (() => {
+  let chart, axes, surface;
+
   const beforeStart = () => {
     return new Promise((resolve, reject) => {
       const libScript = document.createElement("script");
@@ -12,38 +14,58 @@ const BENCHMARK_IMPLEMENTATION = (() => {
     return new Promise((resolve, reject) => {
       const { lightningChart, emptyFill, AxisTickStrategies } = lcjs;
 
-      const chart = lightningChart()
-        .Chart3D({
-          container: document.getElementById("chart"),
-        })
-        .setTitleFillStyle(emptyFill);
+      chart = lightningChart().Chart3D({
+        container: document.getElementById("chart"),
+      });
 
-      const axes = [
+      chart
+        .getDefaultAxisY()
+        .setInterval(
+          BENCHMARK_CONFIG.yAxisInterval[0],
+          BENCHMARK_CONFIG.yAxisInterval[1],
+          false,
+          true
+        );
+
+      axes = [
         chart.getDefaultAxisX(),
         chart.getDefaultAxisY(),
         chart.getDefaultAxisZ(),
       ];
-      // NOTE: Load speed can be further increased by initially loading chart without text (axis ticks).
-      //   axes.forEach((axis) => axis.setTickStrategy(AxisTickStrategies.Empty));
 
-      const surface = chart
-        .addSurfaceGridSeries({
-          columns: BENCHMARK_CONFIG.columns,
-          rows: BENCHMARK_CONFIG.rows,
-        })
-        .invalidateHeightMap(initialData);
+      if (!BENCHMARK_CONFIG.ticksEnabled) {
+        chart.setTitleFillStyle(emptyFill);
+        axes.forEach((axis) => axis.setTickStrategy(AxisTickStrategies.Empty));
+      }
 
-      requestAnimationFrame(() => {
-        resolve();
-        // axes.forEach((axis) =>
-        //   axis.setTickStrategy(AxisTickStrategies.Numeric)
-        // );
-      });
+      if (BENCHMARK_CONFIG.mode !== "append") {
+        surface = chart
+          .addSurfaceGridSeries({
+            columns: BENCHMARK_CONFIG.sampleSize,
+            rows: BENCHMARK_CONFIG.sampleHistory,
+          })
+          .invalidateHeightMap(initialData);
+      } else {
+        surface = chart.addSurfaceScrollingGridSeries({
+          columns: BENCHMARK_CONFIG.sampleSize,
+          rows: BENCHMARK_CONFIG.sampleHistory,
+          scrollDimension: "rows",
+        });
+      }
+
+      requestAnimationFrame(resolve);
+    });
+  };
+
+  const appendData = (data) => {
+    surface.addValues({
+      yValues: data,
     });
   };
 
   return {
     beforeStart,
     loadChart,
+    appendData,
   };
 })();

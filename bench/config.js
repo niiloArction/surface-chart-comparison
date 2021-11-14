@@ -1,9 +1,10 @@
 const BENCHMARK_CONFIG = {
-  library: "plotly",
+  library: "lcjs",
   // "static" | "append" | "refresh"
-  mode: "static",
-  // X axis
-  columns: 50,
-  // Z axis
-  rows: 50,
+  mode: "append",
+  sampleSize: 5,
+  sampleHistory: 50,
+  ticksEnabled: false,
+  appendNewSamplesPerSecond: 1,
+  yAxisInterval: [0, 1.2],
 };
