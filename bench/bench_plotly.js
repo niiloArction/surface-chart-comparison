@@ -25,18 +25,17 @@ const BENCHMARK_IMPLEMENTATION = (() => {
           aspectmode: "manual",
           zaxis: {
             range: BENCHMARK_CONFIG.yAxisInterval,
+            showgrid: BENCHMARK_CONFIG.ticksEnabled
+          },
+          yaxis: {
+            showgrid: BENCHMARK_CONFIG.ticksEnabled
+          },
+          xaxis: {
+            showgrid: BENCHMARK_CONFIG.ticksEnabled
           },
         },
       };
       Plotly.newPlot("chart", plotData, layout);
-
-      if (!BENCHMARK_CONFIG.ticksEnabled) {
-        // TODO IMMEDIATE: How to hide ticks ?
-        layout.scene.zaxis.showgrid = BENCHMARK_CONFIG.ticksEnabled
-        layout.scene.yaxis.showgrid = BENCHMARK_CONFIG.ticksEnabled
-        layout.scene.xaxis.showgrid = BENCHMARK_CONFIG.ticksEnabled
-        Plotly.redraw("chart", plotData, layout);
-      }
 
       requestAnimationFrame(resolve);
     });
