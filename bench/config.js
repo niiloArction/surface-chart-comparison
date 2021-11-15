@@ -1,10 +1,11 @@
 const BENCHMARK_CONFIG = {
   library: "lcjs",
   // "static" | "append" | "refresh"
-  mode: "append",
-  sampleSize: 5,
-  sampleHistory: 50,
+  mode: "refresh",
+  sampleSize: 1000,
+  sampleHistory: 1000,
   ticksEnabled: false,
-  appendNewSamplesPerSecond: 1,
   yAxisInterval: [0, 1.2],
+  appendNewSamplesPerSecond: 10,
+  refreshRate: 10,
 };

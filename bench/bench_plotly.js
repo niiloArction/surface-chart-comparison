@@ -49,9 +49,15 @@ const BENCHMARK_IMPLEMENTATION = (() => {
     Plotly.redraw("chart");
   };
 
+  const refreshData = (data) => {
+    plotData[0].z = data
+    Plotly.redraw("chart");
+  }
+
   return {
     beforeStart,
     loadChart,
     appendData,
+    refreshData,
   };
 })();

@@ -66,5 +66,30 @@
       };
       onEveryFrame();
     }
+
+    if (BENCHMARK_CONFIG.mode === "refresh") {
+
+      const testData2 = await createSpectrumDataGenerator()
+        .setSampleSize(BENCHMARK_CONFIG.sampleSize)
+        .setNumberOfSamples(BENCHMARK_CONFIG.sampleHistory)
+        .generate()
+        .toPromise();
+
+      let tPrev = window.performance.now()
+      let iDataSet = 0
+      const onEveryFrame = () => {
+        const tNow = window.performance.now()
+        const tDelta = tNow - tPrev
+        if (tDelta >= 1000 / BENCHMARK_CONFIG.refreshRate) {
+          iDataSet = (iDataSet + 1) % 2
+          const dataSet = iDataSet === 0 ? testData1 : testData2
+          BENCHMARK_IMPLEMENTATION.refreshData(dataSet)
+          tPrev = tNow
+        }
+        requestAnimationFrame(onEveryFrame)
+      }
+      onEveryFrame()
+    }
+
   });
 })();

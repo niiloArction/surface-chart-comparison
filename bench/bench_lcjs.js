@@ -12,7 +12,7 @@ const BENCHMARK_IMPLEMENTATION = (() => {
 
   const loadChart = (initialData) => {
     return new Promise((resolve, reject) => {
-      const { lightningChart, emptyFill, AxisTickStrategies } = lcjs;
+      const { lightningChart, emptyFill, AxisTickStrategies, AxisScrollStrategies } = lcjs;
 
       chart = lightningChart().Chart3D({
         container: document.getElementById("chart"),
@@ -43,6 +43,7 @@ const BENCHMARK_IMPLEMENTATION = (() => {
           .addSurfaceGridSeries({
             columns: BENCHMARK_CONFIG.sampleSize,
             rows: BENCHMARK_CONFIG.sampleHistory,
+            dataOrder: 'rows',
           })
           .invalidateHeightMap(initialData);
       } else {
@@ -51,6 +52,7 @@ const BENCHMARK_IMPLEMENTATION = (() => {
           rows: BENCHMARK_CONFIG.sampleHistory,
           scrollDimension: "rows",
         });
+        chart.getDefaultAxisZ().setScrollStrategy(AxisScrollStrategies.progressive).setInterval(0, -BENCHMARK_CONFIG.sampleHistory)
       }
 
       requestAnimationFrame(resolve);
@@ -63,9 +65,14 @@ const BENCHMARK_IMPLEMENTATION = (() => {
     });
   };
 
+  const refreshData = (data) => {
+    surface.invalidateHeightMap(data)
+  }
+
   return {
     beforeStart,
     loadChart,
     appendData,
+    refreshData,
   };
 })();
