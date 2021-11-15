@@ -39,6 +39,22 @@
     const tLoadup = window.performance.now() - tStart;
     console.log(`\t${tLoadup.toFixed(1)}ms`);
 
+    // Setup FPS monitoring.
+    setTimeout(() => {
+      console.log(`FPS monitoring start`)
+      let fpsMonitoringStart = Date.now();
+      let frames = 0;
+      let fps;
+      const recordFrame = () => {
+        frames++;
+        const tNow = Date.now();
+        fps = 1000 / ((tNow - fpsMonitoringStart) / frames);
+        requestAnimationFrame(recordFrame);
+      };
+      requestAnimationFrame(recordFrame);
+      setInterval(() => console.log(`FPS: ${fps.toFixed(1)}`), 1000);
+    }, 2500);
+
     if (BENCHMARK_CONFIG.mode === "append") {
       let iSample = BENCHMARK_CONFIG.sampleHistory - 1;
       let tPrev = window.performance.now();
@@ -90,6 +106,5 @@
       }
       onEveryFrame()
     }
-
   });
 })();
