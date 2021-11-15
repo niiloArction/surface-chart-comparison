@@ -25,13 +25,38 @@ const BENCHMARK_IMPLEMENTATION = (() => {
           aspectmode: "manual",
           zaxis: {
             range: BENCHMARK_CONFIG.yAxisInterval,
-            showgrid: BENCHMARK_CONFIG.ticksEnabled
+            autorange: false,
+            showgrid: BENCHMARK_CONFIG.ticksEnabled,
+            zeroline: BENCHMARK_CONFIG.ticksEnabled,
+            showline: BENCHMARK_CONFIG.ticksEnabled,
+            autotick: false,
+            title: !BENCHMARK_CONFIG.ticksEnabled && '',
+            ticks: '',
+            showspikes: BENCHMARK_CONFIG.ticksEnabled,
+            showticklabels: BENCHMARK_CONFIG.ticksEnabledlse
           },
           yaxis: {
-            showgrid: BENCHMARK_CONFIG.ticksEnabled
+            autorange: true,
+            showgrid: BENCHMARK_CONFIG.ticksEnabled,
+            zeroline: BENCHMARK_CONFIG.ticksEnabled,
+            showline: BENCHMARK_CONFIG.ticksEnabled,
+            autotick: true,
+            title: !BENCHMARK_CONFIG.ticksEnabled && '',
+            ticks: '',
+            showspikes: BENCHMARK_CONFIG.ticksEnabled,
+            showticklabels: BENCHMARK_CONFIG.ticksEnabledlse,
           },
           xaxis: {
-            showgrid: BENCHMARK_CONFIG.ticksEnabled
+            autorange: true,
+            showgrid: BENCHMARK_CONFIG.ticksEnabled,
+            zeroline: BENCHMARK_CONFIG.ticksEnabled,
+            showline: BENCHMARK_CONFIG.ticksEnabled,
+            autotick: true,
+            title: !BENCHMARK_CONFIG.ticksEnabled && '',
+            ticks: '',
+            showspikes: BENCHMARK_CONFIG.ticksEnabled,
+            showticklabels: BENCHMARK_CONFIG.ticksEnabledlse
+
           },
         },
       };
