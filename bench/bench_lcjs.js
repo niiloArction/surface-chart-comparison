@@ -51,7 +51,10 @@ const BENCHMARK_IMPLEMENTATION = (() => {
           columns: BENCHMARK_CONFIG.sampleSize,
           rows: BENCHMARK_CONFIG.sampleHistory,
           scrollDimension: "rows",
-        });
+        })
+        .addValues({
+          yValues: initialData
+        })
         chart.getDefaultAxisZ().setScrollStrategy(AxisScrollStrategies.progressive).setInterval(0, -BENCHMARK_CONFIG.sampleHistory)
       }
 
