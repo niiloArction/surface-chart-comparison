@@ -12,7 +12,7 @@ const BENCHMARK_IMPLEMENTATION = (() => {
 
   const loadChart = (initialData) => {
     return new Promise((resolve, reject) => {
-      const { lightningChart, emptyFill, AxisTickStrategies, AxisScrollStrategies } = lcjs;
+      const { lightningChart, emptyFill, AxisTickStrategies, AxisScrollStrategies, ColorShadingStyles } = lcjs;
 
       chart = lightningChart().Chart3D({
         container: document.getElementById("chart"),
@@ -45,6 +45,7 @@ const BENCHMARK_IMPLEMENTATION = (() => {
             rows: BENCHMARK_CONFIG.sampleHistory,
             dataOrder: 'rows',
           })
+          .setColorShadingStyle(new ColorShadingStyles.Simple())
           .invalidateHeightMap(initialData);
       } else {
         surface = chart.addSurfaceScrollingGridSeries({
