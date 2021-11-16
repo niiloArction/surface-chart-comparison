@@ -33,7 +33,7 @@ const BENCHMARK_IMPLEMENTATION = (() => {
             title: !BENCHMARK_CONFIG.ticksEnabled && '',
             ticks: '',
             showspikes: BENCHMARK_CONFIG.ticksEnabled,
-            showticklabels: BENCHMARK_CONFIG.ticksEnabledlse
+            showticklabels: BENCHMARK_CONFIG.ticksEnabled
           },
           yaxis: {
             autorange: true,
@@ -44,7 +44,7 @@ const BENCHMARK_IMPLEMENTATION = (() => {
             title: !BENCHMARK_CONFIG.ticksEnabled && '',
             ticks: '',
             showspikes: BENCHMARK_CONFIG.ticksEnabled,
-            showticklabels: BENCHMARK_CONFIG.ticksEnabledlse,
+            showticklabels: BENCHMARK_CONFIG.ticksEnabled,
           },
           xaxis: {
             autorange: true,
@@ -55,7 +55,7 @@ const BENCHMARK_IMPLEMENTATION = (() => {
             title: !BENCHMARK_CONFIG.ticksEnabled && '',
             ticks: '',
             showspikes: BENCHMARK_CONFIG.ticksEnabled,
-            showticklabels: BENCHMARK_CONFIG.ticksEnabledlse
+            showticklabels: BENCHMARK_CONFIG.ticksEnabled
 
           },
         },
