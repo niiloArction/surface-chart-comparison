@@ -25,14 +25,42 @@ const BENCHMARK_IMPLEMENTATION = (() => {
           aspectmode: "manual",
           zaxis: {
             range: BENCHMARK_CONFIG.yAxisInterval,
+            autorange: false,
+            showgrid: BENCHMARK_CONFIG.ticksEnabled,
+            zeroline: BENCHMARK_CONFIG.ticksEnabled,
+            showline: BENCHMARK_CONFIG.ticksEnabled,
+            autotick: false,
+            title: !BENCHMARK_CONFIG.ticksEnabled && '',
+            ticks: '',
+            showspikes: BENCHMARK_CONFIG.ticksEnabled,
+            showticklabels: BENCHMARK_CONFIG.ticksEnabledlse
+          },
+          yaxis: {
+            autorange: true,
+            showgrid: BENCHMARK_CONFIG.ticksEnabled,
+            zeroline: BENCHMARK_CONFIG.ticksEnabled,
+            showline: BENCHMARK_CONFIG.ticksEnabled,
+            autotick: true,
+            title: !BENCHMARK_CONFIG.ticksEnabled && '',
+            ticks: '',
+            showspikes: BENCHMARK_CONFIG.ticksEnabled,
+            showticklabels: BENCHMARK_CONFIG.ticksEnabledlse,
+          },
+          xaxis: {
+            autorange: true,
+            showgrid: BENCHMARK_CONFIG.ticksEnabled,
+            zeroline: BENCHMARK_CONFIG.ticksEnabled,
+            showline: BENCHMARK_CONFIG.ticksEnabled,
+            autotick: true,
+            title: !BENCHMARK_CONFIG.ticksEnabled && '',
+            ticks: '',
+            showspikes: BENCHMARK_CONFIG.ticksEnabled,
+            showticklabels: BENCHMARK_CONFIG.ticksEnabledlse
+
           },
         },
       };
       Plotly.newPlot("chart", plotData, layout);
-
-      if (!BENCHMARK_CONFIG.ticksEnabled) {
-        // TODO IMMEDIATE: How to hide ticks ?
-      }
 
       requestAnimationFrame(resolve);
     });
