@@ -12,7 +12,7 @@ const BENCHMARK_IMPLEMENTATION = (() => {
 
   const loadChart = (initialData) => {
     return new Promise((resolve, reject) => {
-      const { lightningChart, emptyFill, AxisTickStrategies, AxisScrollStrategies, ColorShadingStyles } = lcjs;
+      const { lightningChart, emptyFill, AxisTickStrategies, AxisScrollStrategies, ColorShadingStyles, emptyLine } = lcjs;
 
       chart = lightningChart().Chart3D({
         container: document.getElementById("chart"),
@@ -39,25 +39,29 @@ const BENCHMARK_IMPLEMENTATION = (() => {
       }
 
       if (BENCHMARK_CONFIG.mode !== "append") {
+        console.log(`surface ${BENCHMARK_CONFIG.columns}x${BENCHMARK_CONFIG.rows}`)
         surface = chart
           .addSurfaceGridSeries({
-            columns: BENCHMARK_CONFIG.sampleSize,
-            rows: BENCHMARK_CONFIG.sampleHistory,
+            columns: BENCHMARK_CONFIG.columns,
+            rows: BENCHMARK_CONFIG.rows,
             dataOrder: 'rows',
           })
-          .setColorShadingStyle(new ColorShadingStyles.Simple())
           .invalidateHeightMap(initialData);
       } else {
+        const surfaceRows = Math.ceil(BENCHMARK_CONFIG.appendNewSamplesPerSecond * BENCHMARK_CONFIG.appendTimeDomainIntervalSeconds)
+        console.log(`surface ${BENCHMARK_CONFIG.appendSampleSize}x${surfaceRows}`)
         surface = chart.addSurfaceScrollingGridSeries({
-          columns: BENCHMARK_CONFIG.sampleSize,
-          rows: BENCHMARK_CONFIG.sampleHistory,
+          columns: BENCHMARK_CONFIG.appendSampleSize,
+          rows: surfaceRows,
           scrollDimension: "rows",
         })
         .addValues({
           yValues: initialData
         })
-        chart.getDefaultAxisZ().setScrollStrategy(AxisScrollStrategies.progressive).setInterval(0, -BENCHMARK_CONFIG.sampleHistory)
+        chart.getDefaultAxisZ().setScrollStrategy(AxisScrollStrategies.progressive).setInterval(0, -surfaceRows)
       }
+
+      surface.setColorShadingStyle(new ColorShadingStyles.Simple()).setWireframeStyle(emptyLine)
 
       requestAnimationFrame(resolve);
     });

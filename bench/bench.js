@@ -3,9 +3,10 @@
   console.log(BENCHMARK_CONFIG);
 
   const { createSpectrumDataGenerator } = xydata;
+  const surfaceAppendRowsCount = Math.ceil(BENCHMARK_CONFIG.appendNewSamplesPerSecond * BENCHMARK_CONFIG.appendTimeDomainIntervalSeconds)
   const promiseTestData1 = createSpectrumDataGenerator()
-    .setSampleSize(BENCHMARK_CONFIG.sampleSize)
-    .setNumberOfSamples(BENCHMARK_CONFIG.sampleHistory)
+    .setSampleSize(BENCHMARK_CONFIG.mode === 'append' ? BENCHMARK_CONFIG.appendSampleSize : BENCHMARK_CONFIG.columns)
+    .setNumberOfSamples(BENCHMARK_CONFIG.mode === 'append' ? surfaceAppendRowsCount : BENCHMARK_CONFIG.rows)
     .generate()
     .toPromise();
 
@@ -56,7 +57,7 @@
     }, 2500);
 
     if (BENCHMARK_CONFIG.mode === "append") {
-      let iSample = BENCHMARK_CONFIG.sampleHistory - 1;
+      let iSample = surfaceAppendRowsCount - 1;
       let tPrev = window.performance.now();
       let newDataModulus = 0;
       const onEveryFrame = () => {
@@ -86,8 +87,8 @@
     if (BENCHMARK_CONFIG.mode === "refresh") {
 
       const testData2 = await createSpectrumDataGenerator()
-        .setSampleSize(BENCHMARK_CONFIG.sampleSize)
-        .setNumberOfSamples(BENCHMARK_CONFIG.sampleHistory)
+        .setSampleSize(BENCHMARK_CONFIG.columns)
+        .setNumberOfSamples(BENCHMARK_CONFIG.rows)
         .generate()
         .toPromise();
 
