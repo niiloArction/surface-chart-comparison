@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+
+    <!-- Prepare a DOM with a defined width and height for ECharts -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+
+    <script src="../xydata.iife.js"></script>
+
+    <script type="text/javascript">
+
+
+        const CONFIG = {    
+            // NOTE: Columns = X Axis
+            columns: 50,
+            // NOTE: Rows = Z Axis
+            rows: 60,
+        }
+
+
+        const {
+            createSpectrumDataGenerator
+        } = xydata
+        const { rows, columns } = CONFIG
+
+      // Initialize the echarts instance based on the prepared dom
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+
+        // options
+        var option;
+
+        // array of data
+        var z_data=[ ]
+
+                
+        option = {
+            tooltip: {},
+            backgroundColor: '#fff',
+            visualMap: {
+                show: false,
+                dimension: 2,
+                min: -1,
+                max: 1,
+            },
+            // animation 
+            animation: true,
+            
+            xAxis3D: {
+                type: 'value',
+            },
+            yAxis3D: {
+                type: 'value',
+            },
+            zAxis3D: {
+                type: 'value',
+            },
+            grid3D: {
+                viewControl: {
+                    projection: 'orthographic'
+                },
+                // hide grid and axes
+                show: true,
+
+            },
+            series: [
+                {
+                    type: 'surface',
+                    data: [...z_data]
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+            
+        Promise.all(
+            [0, 1].map(_ => 
+            createSpectrumDataGenerator()
+                .setSampleSize( columns )
+                .setNumberOfSamples( rows )
+                .generate()
+                .toPromise()
+            ))
+            .then(dataSetsList => {
+
+                    let iDataSet = 0
+                    const changeDataSet = () => {
+                        z_data.length = 0
+                        iDataSet = (iDataSet + 1) % dataSetsList.length
+                        dataSetsList[iDataSet].forEach((element, i) => {
+                        element.forEach((el, k)=>{
+                            z_data.push([k,i,el])
+                        })
+                    });
+                    myChart.setOption({
+                        series: [
+                            {
+                                data: [...z_data]
+                            }
+                        ]
+                    });
+                        // surface.invalidateYOnly(dataSetsList[iDataSet])
+                    }
+                    changeDataSet()
+                    setInterval(changeDataSet, 500);
+
+                })
+
+
+    </script>
+  </body>
+</html>
