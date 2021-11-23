@@ -12,7 +12,7 @@ const BENCHMARK_IMPLEMENTATION = (() => {
 
   const loadChart = (initialData) => {
     return new Promise((resolve, reject) => {
-      const { lightningChart, emptyFill, AxisTickStrategies, AxisScrollStrategies, ColorShadingStyles, emptyLine } = lcjs;
+      const { lightningChart, emptyFill, AxisTickStrategies, AxisScrollStrategies, ColorShadingStyles, emptyLine, PalettedFill, LUT, ColorRGBA } = lcjs;
 
       chart = lightningChart().Chart3D({
         container: document.getElementById("chart"),
@@ -61,7 +61,18 @@ const BENCHMARK_IMPLEMENTATION = (() => {
         chart.getDefaultAxisZ().setScrollStrategy(AxisScrollStrategies.progressive).setInterval(0, -surfaceRows)
       }
 
-      surface.setColorShadingStyle(new ColorShadingStyles.Simple()).setWireframeStyle(emptyLine)
+      surface
+        .setFillStyle(new PalettedFill({
+          lookUpProperty: 'y',
+          lut: new LUT({
+            interpolate: true,
+            steps: [
+              {value: 0, color: ColorRGBA(0, 0, 255)},
+              {value: 1, color: ColorRGBA(255, 0, 0)}
+            ]
+          })
+        }))
+        .setColorShadingStyle(new ColorShadingStyles.Simple()).setWireframeStyle(emptyLine)
 
       requestAnimationFrame(resolve);
     });

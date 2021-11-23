@@ -4,9 +4,9 @@ const BENCHMARK_CONFIG = {
   // "static" | "append" | "refresh"
   mode: "static",
   // Only affects "static" and "refresh" modes!
-  columns: 100,
+  columns: 1000,
   // Only affects "static" and "refresh" modes!
-  rows: 100,
+  rows: 1000,
   // In "refresh" mode, amount of refreshes every second.
   refreshRate: 10,
   ticksEnabled: false,
@@ -18,6 +18,6 @@ const BENCHMARK_CONFIG = {
   // In "append" mode, interval of x axis as seconds as well as one size of surface grid.
   appendTimeDomainIntervalSeconds: 10,
   // In "append" mode, the data that matches this many seconds is first appended into the chart to simulate as if the application had run for a long time.
-  // TODO: Unimplemented
   appendHistorySeconds: 0,
+  maxChunkDataPoints: 978694,
 };

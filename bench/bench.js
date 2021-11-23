@@ -6,7 +6,7 @@
   const surfaceAppendRowsCount = Math.ceil(BENCHMARK_CONFIG.appendNewSamplesPerSecond * BENCHMARK_CONFIG.appendTimeDomainIntervalSeconds)
   const promiseTestData1 = createSpectrumDataGenerator()
     .setSampleSize(BENCHMARK_CONFIG.mode === 'append' ? BENCHMARK_CONFIG.appendSampleSize : BENCHMARK_CONFIG.columns)
-    .setNumberOfSamples(BENCHMARK_CONFIG.mode === 'append' ? surfaceAppendRowsCount : BENCHMARK_CONFIG.rows)
+    .setNumberOfSamples(BENCHMARK_CONFIG.mode === 'append' ? surfaceAppendRowsCount * 2 : BENCHMARK_CONFIG.rows)
     .generate()
     .toPromise();
 
@@ -39,6 +39,25 @@
     await BENCHMARK_IMPLEMENTATION.loadChart(testData1);
     const tLoadup = window.performance.now() - tStart;
     console.log(`\t${tLoadup.toFixed(1)}ms`);
+    let dataSamplesCount = testData1.length
+
+    if (BENCHMARK_CONFIG.mode === "append") {
+      // Simulate as if the application had been running for a preset time (config: appendHistorySeconds)
+      console.log(`appending history data ${BENCHMARK_CONFIG.appendHistorySeconds}s ...`)
+      while (dataSamplesCount < BENCHMARK_CONFIG.appendHistorySeconds * BENCHMARK_CONFIG.appendNewSamplesPerSecond) {
+        const addSamplesCount = Math.min(Math.round(BENCHMARK_CONFIG.maxChunkDataPoints / BENCHMARK_CONFIG.appendSampleSize), BENCHMARK_CONFIG.appendHistorySeconds * BENCHMARK_CONFIG.appendNewSamplesPerSecond - dataSamplesCount)
+        
+        const newSamples = [];
+        for (let i = 0; i < addSamplesCount; i += 1) {
+          newSamples.push(testData1[(dataSamplesCount + i) % testData1.length]);
+        }
+        BENCHMARK_IMPLEMENTATION.appendData(newSamples);
+
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        dataSamplesCount += addSamplesCount
+        console.log(`\t${dataSamplesCount * BENCHMARK_CONFIG.appendSampleSize} / ${BENCHMARK_CONFIG.appendHistorySeconds * BENCHMARK_CONFIG.appendNewSamplesPerSecond * BENCHMARK_CONFIG.appendSampleSize} data points`)
+      }
+    }
 
     // Setup FPS monitoring.
     setTimeout(() => {
@@ -53,11 +72,16 @@
         requestAnimationFrame(recordFrame);
       };
       requestAnimationFrame(recordFrame);
-      setInterval(() => console.log(`FPS: ${fps.toFixed(1)}`), 1000);
+      setInterval(() => console.log(`FPS: ${fps.toFixed(1)}`), 5000);
+      setInterval(() => {
+        console.log(`Reset FPS counter`)
+        fpsMonitoringStart = Date.now()
+        frames = 0
+        fps = 0
+      }, 10000)
     }, 2500);
 
     if (BENCHMARK_CONFIG.mode === "append") {
-      let iSample = surfaceAppendRowsCount - 1;
       let tPrev = window.performance.now();
       let newDataModulus = 0;
       const onEveryFrame = () => {
@@ -71,11 +95,11 @@
         if (newSamplesCount > 0) {
           const newSamples = [];
           for (let i = 0; i < newSamplesCount; i += 1) {
-            newSamples.push(testData1[(iSample + i) % testData1.length]);
+            newSamples.push(testData1[(dataSamplesCount + i) % testData1.length]);
           }
           BENCHMARK_IMPLEMENTATION.appendData(newSamples);
           tPrev = tNow;
-          iSample += newSamplesCount;
+          dataSamplesCount += newSamplesCount;
           newDataModulus = newSamplesCountFloat % 1;
         }
 

@@ -19,11 +19,13 @@ import { TSciChart3D } from "scichart/types/TSciChart3D";
 declare let BENCHMARK_CONFIG: {
   library: "scichart",
   mode: "static" | "append" | "refresh",
-  sampleSize: number,
-  sampleHistory: number,
+  columns: number,
+  rows: number,
   ticksEnabled: boolean,
   yAxisInterval: [number, number],
+  appendSampleSize: number,
   appendNewSamplesPerSecond: number,
+  appendTimeDomainIntervalSeconds: number,
   refreshRate: number,
 }
 
@@ -113,7 +115,7 @@ declare let BENCHMARK_CONFIG: {
     for (let i = 0; i < newData.length; i += 1) {
       data.push(newData[i]);
     }
-    while (data.length > BENCHMARK_CONFIG.sampleHistory) {
+    while (data.length > BENCHMARK_CONFIG.appendNewSamplesPerSecond * BENCHMARK_CONFIG.appendTimeDomainIntervalSeconds) {
       data.shift();
     }
     dataSeries.setYValues(data)
