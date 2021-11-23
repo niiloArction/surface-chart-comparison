@@ -30,6 +30,20 @@
         "appendTimeDomainIntervalSeconds": 10,
         "fail": false,
         "cpu": 100.0,
-        "fps": 
+        "fps": 7.4
+    },
+    {
+        "appendSampleSize": 1000,
+        "appendNewSamplesPerSecond": 200,
+        "appendTimeDomainIntervalSeconds": 10,
+        "fail": false,
+        "cpu": 100.0,
+        "fps": 4.1
+    },
+    {
+        "appendSampleSize": 1000,
+        "appendNewSamplesPerSecond": 1000,
+        "appendTimeDomainIntervalSeconds": 10,
+        "fail": true
     }
 ]
