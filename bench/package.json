@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "live-server"
+    "start": "live-server --entry-file=bench.html"
   },
   "author": "",
   "license": "ISC",

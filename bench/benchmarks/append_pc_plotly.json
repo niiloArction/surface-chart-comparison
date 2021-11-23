@@ -31,5 +31,13 @@
         "fail": false,
         "cpu": 100,
         "fps": 6.3
+    },
+    {
+        "appendSampleSize": 500,
+        "appendNewSamplesPerSecond": 200,
+        "appendTimeDomainIntervalSeconds": 10,
+        "fail": false,
+        "cpu": 100,
+        "fps": 0.7
     }
 ]

@@ -33,6 +33,14 @@
         "fps": 7.4
     },
     {
+        "appendSampleSize": 500,
+        "appendNewSamplesPerSecond": 200,
+        "appendTimeDomainIntervalSeconds": 10,
+        "fail": false,
+        "cpu": 100.0,
+        "fps": 5.8
+    },
+    {
         "appendSampleSize": 1000,
         "appendNewSamplesPerSecond": 200,
         "appendTimeDomainIntervalSeconds": 10,
