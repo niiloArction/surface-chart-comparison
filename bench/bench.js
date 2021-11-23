@@ -1,15 +1,9 @@
-(async () => {
+requestAnimationFrame(async () => {
   console.log("start benchmark");
   console.log(BENCHMARK_CONFIG);
 
-  const { createSpectrumDataGenerator } = xydata;
-  const surfaceAppendRowsCount = Math.ceil(BENCHMARK_CONFIG.appendNewSamplesPerSecond * BENCHMARK_CONFIG.appendTimeDomainIntervalSeconds)
-  const promiseTestData1 = createSpectrumDataGenerator()
-    .setSampleSize(BENCHMARK_CONFIG.mode === 'append' ? BENCHMARK_CONFIG.appendSampleSize : BENCHMARK_CONFIG.columns)
-    .setNumberOfSamples(BENCHMARK_CONFIG.mode === 'append' ? surfaceAppendRowsCount * 2 : BENCHMARK_CONFIG.rows)
-    .generate()
-    .toPromise();
-
+  const promiseTestDataSets = generateTestDataSets()
+  
   const promiseBenchmarkImplementation = new Promise((resolve, reject) => {
     const benchScriptName = `./bench_${BENCHMARK_CONFIG.library}.js`;
     const benchScript = document.createElement("script");
@@ -18,10 +12,11 @@
     document.body.append(benchScript);
   });
 
-  const [testData1] = await Promise.all([
-    promiseTestData1,
+  const [testDataSets] = await Promise.all([
+    promiseTestDataSets,
     promiseBenchmarkImplementation,
   ]);
+  const testData1 = testDataSets[0]
 
   console.log("benchmark ready");
   console.log(BENCHMARK_IMPLEMENTATION);
@@ -109,27 +104,111 @@
     }
 
     if (BENCHMARK_CONFIG.mode === "refresh") {
-
-      const testData2 = await createSpectrumDataGenerator()
-        .setSampleSize(BENCHMARK_CONFIG.columns)
-        .setNumberOfSamples(BENCHMARK_CONFIG.rows)
-        .generate()
-        .toPromise();
-
-      let tPrev = window.performance.now()
-      let iDataSet = 0
+      let tStart = window.performance.now()
+      let iRefresh = 0
+      let tPrevDataSet = -1
       const onEveryFrame = () => {
         const tNow = window.performance.now()
-        const tDelta = tNow - tPrev
-        if (tDelta >= 1000 / BENCHMARK_CONFIG.refreshRate) {
-          iDataSet = (iDataSet + 1) % 2
-          const dataSet = iDataSet === 0 ? testData1 : testData2
+        const tAnimation = tNow - tStart
+        iRefresh += 1
+        const iDataSet = Math.round( tAnimation / (1000 / BENCHMARK_CONFIG.refreshRate) ) % testDataSets.length
+        if (tPrevDataSet !== iDataSet) {
+          tPrevDataSet = iDataSet
+          const dataSet = testDataSets[iDataSet]
           BENCHMARK_IMPLEMENTATION.refreshData(dataSet)
-          tPrev = tNow
         }
         requestAnimationFrame(onEveryFrame)
       }
       onEveryFrame()
     }
   });
-})();
+})
+
+const generateTestDataSets = async () => {
+  const { createSpectrumDataGenerator, createWaterDropDataGenerator } = xydata;
+
+  if (BENCHMARK_CONFIG.mode === 'static') {
+    return [await createSpectrumDataGenerator()
+      .setSampleSize(BENCHMARK_CONFIG.columns)
+      .setNumberOfSamples(BENCHMARK_CONFIG.rows)
+      .generate()
+      .toPromise()]
+  } else if (BENCHMARK_CONFIG.mode === 'append') {
+    const surfaceAppendRowsCount = Math.ceil(BENCHMARK_CONFIG.appendNewSamplesPerSecond * BENCHMARK_CONFIG.appendTimeDomainIntervalSeconds)
+    return [await createSpectrumDataGenerator()
+      .setSampleSize(BENCHMARK_CONFIG.appendSampleSize)
+      .setNumberOfSamples(surfaceAppendRowsCount * 2)
+      .generate()
+      .toPromise()]
+  }
+  // Refreshing mode
+  
+  const interpolateDataSets = await Promise.all([
+    createWaterDropDataGenerator()
+      .setWaterDrops([
+          {
+              columnNormalized: 0.22,
+              rowNormalized: 0.2,
+              amplitude: 54,
+          },
+      ])
+      .setRows(BENCHMARK_CONFIG.rows)
+      .setColumns(BENCHMARK_CONFIG.columns)
+      .generate()
+      .then(data => data.map(row => row.map(y => y * .01)))
+    ,
+    createWaterDropDataGenerator()
+      .setWaterDrops([
+          {
+              columnNormalized: 0.7,
+              rowNormalized: 0.56,
+              amplitude: 14,
+          },
+      ])
+      .setRows(BENCHMARK_CONFIG.rows)
+      .setColumns(BENCHMARK_CONFIG.columns)
+      .generate()
+      .then(data => data.map(row => row.map(y => y * .01)))
+    ,
+    createWaterDropDataGenerator()
+      .setWaterDrops([
+          {
+              columnNormalized: 0.3,
+              rowNormalized: 0.7,
+              amplitude: 32,
+          },
+      ])
+      .setRows(BENCHMARK_CONFIG.rows)
+      .setColumns(BENCHMARK_CONFIG.columns)
+      .generate()
+      .then(data => data.map(row => row.map(y => y * .01)))
+  ])
+  
+  const animationStepsPerDataSet = BENCHMARK_CONFIG.refreshRate === 60 ? 30 : 5
+  console.log('generating', animationStepsPerDataSet, 'refresh animation steps')
+  const dataSets = []
+  for (let d = 0; d < interpolateDataSets.length; d += 1 ) {
+    const dataSetA = interpolateDataSets[d]
+    const dataSetB = interpolateDataSets[(d + 1) % interpolateDataSets.length]
+    for (let i = 0; i < animationStepsPerDataSet; i += 1) {
+      const interpolationAmount = i / (animationStepsPerDataSet - 1)
+      if (interpolationAmount === 0) {
+        dataSets.push(dataSetA)
+      } else if (interpolationAmount === 1) {
+        dataSets.push(dataSetB)
+      } else {
+        const interpolatedDataSet = []
+        for (let row = 0; row < BENCHMARK_CONFIG.rows; row += 1 ) {
+          interpolatedDataSet.push([])
+          for (let column = 0; column < BENCHMARK_CONFIG.columns; column += 1) {
+            const a = dataSetA[row][column]
+            const b = dataSetB[row][column]
+            interpolatedDataSet[row][column] = a + (b - a) * interpolationAmount
+          }
+        }
+        dataSets.push(interpolatedDataSet)
+      }
+    }
+  }
+  return dataSets
+}

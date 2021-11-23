@@ -16,7 +16,8 @@ const BENCHMARK_IMPLEMENTATION = (() => {
 
       chart = lightningChart().Chart3D({
         container: document.getElementById("chart"),
-      });
+      })
+        .setTitle('')
 
       chart
         .getDefaultAxisY()
@@ -60,6 +61,8 @@ const BENCHMARK_IMPLEMENTATION = (() => {
         })
         chart.getDefaultAxisZ().setScrollStrategy(AxisScrollStrategies.progressive).setInterval(0, -surfaceRows)
       }
+      
+      chart.setBoundingBoxStrokeStyle(emptyLine)
 
       surface
         .setFillStyle(new PalettedFill({
@@ -67,8 +70,9 @@ const BENCHMARK_IMPLEMENTATION = (() => {
           lut: new LUT({
             interpolate: true,
             steps: [
-              {value: 0, color: ColorRGBA(0, 0, 255)},
-              {value: 1, color: ColorRGBA(255, 0, 0)}
+              {value: 0.3, color: ColorRGBA(0, 0, 255)},
+              {value: 0.5, color: ColorRGBA(0, 255, 0)},
+              {value: .8, color: ColorRGBA(255, 0, 0)}
             ]
           })
         }))

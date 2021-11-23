@@ -15,6 +15,7 @@ import { UniformGridDataSeries3D } from "scichart/Charting3D/Model/DataSeries/Un
 import { NumberRange } from "scichart/Core/NumberRange";
 import { zeroArray2D } from "scichart/utils/zeroArray2D";
 import { TSciChart3D } from "scichart/types/TSciChart3D";
+import { EAutoRange } from "scichart/types/AutoRange";
 
 declare let BENCHMARK_CONFIG: {
   library: "scichart",
@@ -98,6 +99,7 @@ declare let BENCHMARK_CONFIG: {
         series = new SurfaceMeshRenderableSeries3D(wasmContext, {
             dataSeries,
             meshColorPalette: colorMap,
+            drawMeshAs: EDrawMeshAs.SOLID_MESH,
         });
         sciChart3DSurface.renderableSeries.add(series);
 
@@ -122,6 +124,9 @@ declare let BENCHMARK_CONFIG: {
 
     // NOTE: For some reason, chart is not refreshed after calling setYValues. I haven't found any reference how this refresh should be properly triggered so just using random axis titles as a hotfix.
     sciChart3DSurface.xAxis.axisTitle = Math.random().toFixed(2)
+    sciChart3DSurface.xAxis.autoRange = EAutoRange.Always
+    // sciChart3DSurface.zAxis.autoRange = EAutoRange.Always
+    // sciChart3DSurface.zAxis.visibleRange = new NumberRange(0, 500)
   };
 
   const refreshData = (data) => {

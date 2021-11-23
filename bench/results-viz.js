@@ -30,6 +30,7 @@ if (!target) {
       UILayoutBuilders,
       UIBackgrounds,
       Themes,
+      ColorRGBA,
     } = lcjs;
 
     // ----- REFRESHING -----
@@ -60,17 +61,18 @@ if (!target) {
 
     if (target === 'refresh') {
         data = {
-            chartTitle: 'Refreshing Surface Chart Performance Comparison (2000x2000 Grid)',
+            chartTitle: 'Surface Chart Real-Time Performance Comparison (2000x2000 Grid, 10 Hz refresh rate)',
             categoryAxisTitle: 'JavaScript Chart Library',
             valueAxisTitle: '',
             values: [
               { name: 'LightningChart JS', values: [
-                  { value: 60, label: 'FPS: 60.0' },
+                  // NOTE: FPS measurements over refresh rate (10) are clamped.
+                  { value: Math.min(10, 60), label: 'FPS: 10.0' },
                   { value: 100 - 15.5, label: 'CPU: 15.5%' }
               ] },
               {
                   name: 'Hardware accelerated competitor A', values: [
-                      { value: 2.2, label: 'FPS: 2.2' },
+                      { value: Math.min(10, 2.2), label: 'FPS: 2.2' },
                       { value: 100 - 100.0, label: 'CPU: 100.0%' }
                   ]
               },
@@ -111,8 +113,9 @@ if (!target) {
           }
     }
 
-    const chart = lightningChart().ChartXY()
-      .setTitle(data.chartTitle)
+    const chart = lightningChart()
+        .ChartXY({theme: Themes.darkGold})
+        .setTitle(data.chartTitle)
 
     const axisX = chart.getDefaultAxisX()
       .setTitle(data.categoryAxisTitle)
@@ -123,6 +126,8 @@ if (!target) {
         .setOrigin(UIOrigins.RightTop)
         .setMargin(16)
         .setPadding(8)
+
+    const fillStyles = new Array(5).fill(0).map((_, i) => chart.getTheme().seriesFillStyle(i * 3))
 
     const valuesCount = data.values.reduce((prev, cur) => Math.max(prev, cur.values.length), 0)
     const yValuesMax = new Array(valuesCount).fill(0).map((_, i) => 
@@ -144,7 +149,7 @@ if (!target) {
     data.values.forEach((category, iCategory) => {
         const { name, values } = category
         const xCategoryStart = x
-        const color = ColorHSV(iCategory * 360 / data.values.length)
+        const color = fillStyles[iCategory].getColor()
         const entry = legend.addElement(UIElementBuilders.CheckBox)
             .setButtonOnFillStyle(new SolidFill({color}))
             .setOn(true)
@@ -170,7 +175,7 @@ if (!target) {
                 })
                 bar.setFillStyle(new LinearGradientFill({
                     stops: [
-                        {offset: 0, color: color.setA(30)},
+                        {offset: 0, color: color.setA(60)},
                         {offset: 1, color}
                     ]
                 }))
