@@ -54,7 +54,12 @@ if (!target) {
                   name: 'Competitor B', values: [
                       { value: 152 / 14598, label: '14598 ms' },
                   ]
-              }
+              },
+              {
+                  name: 'Competitor C', values: [
+                      { value: 152 / 30720, label: '30720 ms' },
+                  ]
+              },
             ]
           }
     }
@@ -78,6 +83,12 @@ if (!target) {
               },
               {
                   name: 'Competitor B', values: [
+                      { value: -1, label: 'FAIL', color: '#ff0000' },
+                      { value: -1, label: 'FAIL', color: '#ff0000' }
+                  ]
+              },
+              {
+                  name: 'Competitor C', values: [
                       { value: -1, label: 'FAIL', color: '#ff0000' },
                       { value: -1, label: 'FAIL', color: '#ff0000' }
                   ]
@@ -107,6 +118,12 @@ if (!target) {
                   name: 'Competitor B', values: [
                       { value: 0.7, label: 'FPS: 0.7' },
                       { value: 100 - 100.0, label: 'CPU: 100.0%' }
+                  ]
+              },
+              {
+                  name: 'Competitor C', values: [
+                    { value: -1, label: 'FAIL', color: '#ff0000' },
+                    { value: -1, label: 'FAIL', color: '#ff0000' }
                   ]
               }
             ]
