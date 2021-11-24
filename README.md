@@ -1,3 +1,22 @@
+Public comparison of [LightningChart® JS](https://www.arction.com/lightningchart-js/) performance against other JavaScript charting libraries in visualizing different 3D Surface grid charts.
+
+Surface grid charts are used for visualizing of at least 3-dimensional data which exists on a plane (usually referred as X and Z axes). The best way to understand this scenario is visualization of geospatial information, which has latitude (X), longitude (Z) and height (Y) values.
+
+Additionally, surface grid charts are also used in 4-dimensional data visualization by coloring the surface dynamically based on a 4th data dimension.
+
+For testing performance in different types of applications, we have identified 3 different application types of surface grid charts:
+
+1. **Static surface chart**. A height map data set is loaded and rendered as surface chart.
+
+![](static.png)
+
+2. **Refreshing surface chart**. In this case, the data is dynamic changing every so often (_refresh rate_). Used in real-time monitoring / analysis of geospatial data.
+
+
+
+3. **Appending surface chart**. Also dynamic data, but in this case the previous data is not cleared, instead just shifted out as new data is pushed in. Used in audio monitoring and analysis (spectrograms), for example.
+
+
 
 ## Static performance comparison breakdown
 

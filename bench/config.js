@@ -2,11 +2,11 @@ const BENCHMARK_CONFIG = {
   // "lcjs" | "plotly" | "scichart" | "echart"
   library: "lcjs",
   // "static" | "append" | "refresh"
-  mode: "append",
+  mode: "refresh",
   // Only affects "static" and "refresh" modes!
-  columns: 1000,
+  columns: 100,
   // Only affects "static" and "refresh" modes!
-  rows: 1000,
+  rows: 100,
   // In "refresh" mode, amount of refreshes every second.
   refreshRate: 60,
   ticksEnabled: true,
