@@ -100,6 +100,8 @@ As you might know, LightningChart JS utilizes hardware acceleration for its grap
 - **Hardware scaling**
     - Perhaps something which is not talked about enough; hardware acceleration enables utilizing the power of device graphics processing units (GPU). As a result of this, LightningChart JS performance skyrockets when powerful hardware is used.
 
+It is worth noting, that this is not as simple as "if something is hardware accelerated then it must perform well". There are large differences even between performance of hardware accelerated web charts.
+
 **Let's see what happens when LightningChart JS is used with a powerful machine ...**
 
 We performed a separate test iteration with a more powerful PC (Ryzen 9 5900X, 64GB RAM, RTX 3080) to see what is the maximum capability of LightningChart JS Surface charts. Here's the results!
