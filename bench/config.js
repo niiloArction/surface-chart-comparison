@@ -1,5 +1,5 @@
 const BENCHMARK_CONFIG = {
-  // "lcjs" | "plotly" | "scichart"
+  // "lcjs" | "plotly" | "scichart" | "echart"
   library: "lcjs",
   // "static" | "append" | "refresh"
   mode: "append",
