@@ -49,8 +49,8 @@ Here are the results of static surface grid chart test with 2000x2000 data point
 | JavaScript Chart Library | Loading speed (milliseconds) |
 |:---|:---|
 | LightningChart JS | 152 |
-| Hardware accelerated competitor A | 1302 |
-| Competitor B with no hardware acceleration | 14598 |
+| Hardware accelerated competitor B | 1302 |
+| Competitor A with no hardware acceleration | 14598 |
 | Competitor C with no hardware acceleration | 30720 |
 
 ![](./bench/analysis/visualization-static-2000x2000.PNG)
@@ -64,8 +64,8 @@ Here are the results of refreshing (refresh rate = 10 Hz) surface grid chart tes
 | JavaScript Chart Library | Actual refresh rate /s | CPU Usage (%) |
 |:---|:---|:---|
 | LightningChart JS | 10.0 | 15.5 |
-| Hardware accelerated competitor A | 2.2 | 100.0 |
-| Competitor B with no hardware acceleration | FAIL | FAIL |
+| Hardware accelerated competitor B | 2.2 | 100.0 |
+| Competitor A with no hardware acceleration | FAIL | FAIL |
 | Competitor C with no hardware acceleration | FAIL | FAIL |
 
 Below is a bar chart visualization of this same results table.
@@ -83,8 +83,8 @@ Here are the results of appending surface grid chart test with sample size 500, 
 | JavaScript Chart Library | Refresh rate (FPS) | CPU Usage (%) |
 |:---|:---|:---|
 | LightningChart JS | 60.0 | 7.5 |
-| Hardware accelerated competitor A | 5.8 | 100.0 |
-| Competitor B with no hardware acceleration | 0.7 | 100.0 |
+| Hardware accelerated competitor B | 5.8 | 100.0 |
+| Competitor A with no hardware acceleration | 0.7 | 100.0 |
 | Competitor C with no hardware acceleration | FAIL | FAIL |
 
 Below is a bar chart visualization of this same results table.
