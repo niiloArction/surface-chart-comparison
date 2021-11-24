@@ -12,11 +12,11 @@ For testing performance in different types of applications, we have identified 3
 
 2. **Refreshing surface chart**. In this case, the data is dynamic changing every so often (_refresh rate_). Used in real-time monitoring / analysis of geospatial data.
 
-
+https://user-images.githubusercontent.com/55391673/143197285-60e5fc5c-38c6-4652-8914-55957cabb03f.mp4
 
 3. **Appending surface chart**. Also dynamic data, but in this case the previous data is not cleared, instead just shifted out as new data is pushed in. Used in audio monitoring and analysis (spectrograms), for example.
 
-
+https://user-images.githubusercontent.com/55391673/143197699-a8d979c4-d1ef-44a1-9828-0bd893e74b93.mp4
 
 ## Static performance comparison breakdown
 
