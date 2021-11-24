@@ -12,9 +12,10 @@ const BENCHMARK_IMPLEMENTATION = (() => {
 
   const loadChart = (initialData) => {
     return new Promise((resolve, reject) => {
-      const { lightningChart, emptyFill, AxisTickStrategies, AxisScrollStrategies, ColorShadingStyles, emptyLine, PalettedFill, LUT, ColorRGBA } = lcjs;
+      const { lightningChart, Themes, emptyFill, ColorHSV, AxisTickStrategies, AxisScrollStrategies, ColorShadingStyles, emptyLine, PalettedFill, LUT, ColorRGBA } = lcjs;
 
       chart = lightningChart().Chart3D({
+        theme: Themes.auroraBorealisNew,
         container: document.getElementById("chart"),
       })
         .setTitle('')
@@ -64,17 +65,47 @@ const BENCHMARK_IMPLEMENTATION = (() => {
       
       chart.setBoundingBoxStrokeStyle(emptyLine)
 
+      chart.setBoundingBoxStrokeStyle(emptyLine).setSeriesBackgroundFillStyle(emptyFill)
+      ;[chart.getDefaultAxisX(),chart.getDefaultAxisY(),chart.getDefaultAxisZ()].forEach((axis) => axis.setTickStrategy(AxisTickStrategies.Empty).setStrokeStyle(emptyLine))
+
+
       surface
         .setFillStyle(new PalettedFill({
           lookUpProperty: 'y',
           lut: new LUT({
-            interpolate: true,
             steps: [
-              {value: 0.3, color: ColorRGBA(0, 0, 255)},
-              {value: 0.5, color: ColorRGBA(0, 255, 0)},
-              {value: .8, color: ColorRGBA(255, 0, 0)}
-            ]
-          })
+              {
+                value: 0,
+                color: ColorHSV(0, 1, 0),
+              },
+              {
+                value: (1 / 6),
+                color: ColorHSV(270, 0.84, 0.2),
+              },
+              {
+                value: (2 / 6),
+                color: ColorHSV(289, 0.86, 0.35),
+              },
+              {
+                value: (3 / 6),
+                color: ColorHSV(324, 0.97, 0.56),
+              },
+              {
+                value: (4 / 6),
+                color: ColorHSV(1, 1, 1),
+              },
+              {
+                value: (5 / 6),
+                color: ColorHSV(44, 0.64, 1),
+              },
+              {
+                value: 1,
+                color: ColorHSV(62, 0.32, 1),
+              },
+            ],
+            units: "dB",
+            interpolate: true,
+          }),
         }))
         .setColorShadingStyle(new ColorShadingStyles.Simple()).setWireframeStyle(emptyLine)
 

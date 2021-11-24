@@ -2,7 +2,7 @@ const BENCHMARK_CONFIG = {
   // "lcjs" | "plotly" | "scichart" | "echart"
   library: "lcjs",
   // "static" | "append" | "refresh"
-  mode: "refresh",
+  mode: "append",
   // Only affects "static" and "refresh" modes!
   columns: 100,
   // Only affects "static" and "refresh" modes!
