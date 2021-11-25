@@ -46,12 +46,12 @@ if (!target) {
                   { value: 1, label: '152 ms' },
               ] },
               {
-                  name: 'Hardware accelerated competitor A', values: [
+                  name: 'Hardware accelerated competitor B', values: [
                       { value: 152 / 1302, label: '1302 ms' }
                   ]
               },
               {
-                  name: 'Competitor B', values: [
+                  name: 'Competitor A', values: [
                       { value: 152 / 14598, label: '14598 ms' },
                   ]
               },
@@ -76,13 +76,13 @@ if (!target) {
                   { value: 100 - 15.5, label: 'CPU: 15.5%' }
               ] },
               {
-                  name: 'Hardware accelerated competitor A', values: [
+                  name: 'Hardware accelerated competitor B', values: [
                       { value: Math.min(10, 2.2), label: 'FPS: 2.2' },
                       { value: 100 - 100.0, label: 'CPU: 100.0%' }
                   ]
               },
               {
-                  name: 'Competitor B', values: [
+                  name: 'Competitor A', values: [
                       { value: -1, label: 'FAIL', color: '#ff0000' },
                       { value: -1, label: 'FAIL', color: '#ff0000' }
                   ]
@@ -109,13 +109,13 @@ if (!target) {
                   { value: 100 - 7.5, label: 'CPU: 7.5%' }
               ] },
               {
-                  name: 'Hardware accelerated competitor A', values: [
+                  name: 'Hardware accelerated competitor B', values: [
                       { value: 5.8, label: 'FPS: 5.8' },
                       { value: 100 - 100.0, label: 'CPU: 100.0%' }
                   ]
               },
               {
-                  name: 'Competitor B', values: [
+                  name: 'Competitor A', values: [
                       { value: 0.7, label: 'FPS: 0.7' },
                       { value: 100 - 100.0, label: 'CPU: 100.0%' }
                   ]
