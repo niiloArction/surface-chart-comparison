@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+
+    <div id="container" style="width: 500px; height: 400px;"></div>
+
+    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-surface.min.js"></script>
+    <script src="../xydata.iife.js"></script>
+    <script>
+        const CONFIG = {
+            // NOTE: Columns = X Axis
+            columns: 50,
+            // NOTE: Rows = Z Axis
+            rows: 60,
+        }
+                
+        const {
+            createSpectrumDataGenerator
+        } = xydata
+
+        const { rows, columns } = CONFIG
+
+        anychart.onDocumentReady(function() {
+          const z_data=[ ]
+
+          
+          var chart = anychart.surface()
+
+          createSpectrumDataGenerator()
+              .setSampleSize( columns )
+              .setNumberOfSamples( rows )
+              .generate()
+              .toPromise()
+              .then(data => {
+                
+                data.forEach((element,i) => {
+                    element.forEach((e,o) => {
+                        z_data.push([i,o,e])
+                    });
+                });
+
+                chart.data(z_data)
+              
+
+
+                // display chart
+                chart.container('container').draw();
+                
+              })
+            
+          })
+
+    </script>
+</body>
+</html>

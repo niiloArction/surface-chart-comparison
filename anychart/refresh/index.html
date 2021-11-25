@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+
+    <div id="container" style="width: 500px; height: 400px;"></div>
+
+    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-base.min.js'></script>
+    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-gantt.min.js'></script>
+    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-surface.min.js"></script>
+    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-map.min.js'></script>
+    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-data-adapter.min.js'></script>
+    <script src="../xydata.iife.js"></script>
+    <script>
+
+        const CONFIG = {
+            columns: 50,
+            rows: 60,
+        }
+
+        const { rows, columns } = CONFIG
+
+        const {
+            createSpectrumDataGenerator
+        } = xydata
+
+     
+        anychart.onDocumentReady(function() {
+            // create chart
+            var chart = anychart.surface()
+                          
+            Promise.all(
+                [0, 1].map(_ => 
+                    createSpectrumDataGenerator()
+                        .setSampleSize( columns )
+                        .setNumberOfSamples( rows )
+                        .generate()
+                        .toPromise()
+                )
+            )
+            .then(data => {
+                
+                let iDataSet = 0
+
+                const changeDataSet = () => {
+
+                    // array of data. Empty each time
+                    const z_data = []
+
+                    // iDataSet
+                    iDataSet = (iDataSet + 1) % data.length
+
+                    // fiil up arra
+                    data[iDataSet].forEach((element,i) => {
+                        element.forEach((e,o) => {
+                            z_data.push([i,o,e])
+                        });
+
+                    });
+
+                    // add data to the chart
+                    chart.data(z_data)
+                }
+
+                changeDataSet()
+
+                // draw chart
+                chart.container('container').draw();
+
+                setInterval(changeDataSet, 500);
+
+            })
+        });
+            
+    </script>
+</body>
+</html>
+
+
