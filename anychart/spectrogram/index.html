@@ -6,12 +6,9 @@
 
     <div id="container" style="width: 500px; height: 400px;"></div>
 
-    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-base.min.js'></script>
-    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-gantt.min.js'></script>
-    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-base.min.js"></script>
     <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-surface.min.js"></script>
-    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-map.min.js'></script>
-    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-data-adapter.min.js'></script>
+
     <script src="../xydata.iife.js"></script>
     <script>
 
@@ -30,8 +27,22 @@
         anychart.onDocumentReady(function() {
             // create chart
             var chart = anychart.surface()
-                          
-            
+
+            // box edges
+            chart.box({color: 'blue', thickness: 0});
+            // Axes labed
+            chart.zAxis().labels(false); 
+            chart.xAxis().labels(false);
+            chart.yAxis().labels(false);
+            // Grid
+            gridStroke = {color: 'red', thickness: 0,};
+            chart.xGrid().stroke(gridStroke);
+            chart.yGrid().stroke(gridStroke);
+            chart.zGrid().stroke(gridStroke);
+                                    
+            // the array that records data after loop through 60 rows
+            const constArr = []
+        
             createSpectrumDataGenerator()
             .setSampleSize( columns )
             .setNumberOfSamples( rows )
@@ -41,18 +52,39 @@
 
                 let iSample = 1
                 const addData = () => {
-                    const z_data = []
+                    // array of data that is used for creating surface chart
+                    var z_data =  [...constArr]
 
                     iSample = (iSample + 1) % rows
 
+                    // X row index. first 60 rows it start from 0, then from 59, then from 118 .... 
+                    let min = z_data.length ? z_data[z_data.length-1][0] : 0
+
                     for (let i = 0; i < iSample; i++) {
+
+                        min++ 
+
+                        // push data 
                         data[i].forEach((e,o) => {
-                            z_data.push([i,o,e])
+                            z_data.push([min,o,e])
                         });
+
+                        // remove 1s column
+                        if(z_data.length > rows*columns - 5){
+                            z_data.splice(0,columns)
+                        }
+
                     }
-            
+
+                    // copy z_data to constArr for looping 
+                    if(iSample === rows-1){
+                        constArr.length = 0
+                        constArr.push(...z_data)
+                    }
+
                     chart.data(z_data)
-                    setTimeout(addData, 200)
+
+                    setTimeout(addData, 100)
                 }
                 addData()
 

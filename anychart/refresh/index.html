@@ -6,12 +6,11 @@
 
     <div id="container" style="width: 500px; height: 400px;"></div>
 
-    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-base.min.js'></script>
-    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-gantt.min.js'></script>
-    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-base.min.js"></script>
     <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-surface.min.js"></script>
-    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-map.min.js'></script>
-    <script src='https://cdn.anychart.com/releases/8.10.0/js/anychart-data-adapter.min.js'></script>
+    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-exports.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-ui.min.js"></script>
+    
     <script src="../xydata.iife.js"></script>
     <script>
 
@@ -31,6 +30,20 @@
             // create chart
             var chart = anychart.surface()
                           
+
+            // box edges
+            chart.box({color: 'blue', thickness: 0});
+            // Axes labed
+            chart.zAxis().labels(false); 
+            chart.xAxis().labels(false);
+            chart.yAxis().labels(false);
+            // Grid
+            gridStroke = {color: 'red', thickness: 0,};
+            chart.xGrid().stroke(gridStroke);
+            chart.yGrid().stroke(gridStroke);
+            chart.zGrid().stroke(gridStroke);
+                                    
+
             Promise.all(
                 [0, 1].map(_ => 
                     createSpectrumDataGenerator()

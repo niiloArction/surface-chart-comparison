@@ -29,6 +29,19 @@
           
           var chart = anychart.surface()
 
+            // box edges
+            chart.box({color: 'blue', thickness: 0});
+            // Axes labed
+            chart.zAxis().labels(false); 
+            chart.xAxis().labels(false);
+            chart.yAxis().labels(false);
+            // Grid
+            gridStroke = {color: 'red', thickness: 0,};
+            chart.xGrid().stroke(gridStroke);
+            chart.yGrid().stroke(gridStroke);
+            chart.zGrid().stroke(gridStroke);
+                                    
+
           createSpectrumDataGenerator()
               .setSampleSize( columns )
               .setNumberOfSamples( rows )
