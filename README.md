@@ -24,7 +24,7 @@ The following chart libraries have been tested:
 
 - [LightningChart® JS v.3.3](https://www.arction.com/lightningchart-js/)
 - [ECharts v.5.2.2](http://echarts.apache.org/en/index.html)
-- [SciChart JS v.1.4.1647](https://www.scichart.com/javascript-chart-features/)
+- [SciChart JS v.2.0.2115](https://www.scichart.com/javascript-chart-features/)
 - [Plotly JS v.2.4.2](https://plotly.com/javascript/)
 
 Competitor results are kept unidentified (for example, "Competitor A").

@@ -2,13 +2,13 @@ const BENCHMARK_CONFIG = {
   // "lcjs" | "plotly" | "scichart" | "echart"
   library: "lcjs",
   // "static" | "append" | "refresh"
-  mode: "static",
+  mode: "refresh",
   // Only affects "static" and "refresh" modes!
   columns: 100,
   // Only affects "static" and "refresh" modes!
   rows: 100,
   // In "refresh" mode, amount of refreshes every second.
-  refreshRate: 10,
+  refreshRate: 60,
   ticksEnabled: true,
   yAxisInterval: [0, 1.2],
   // In "append" mode, the size of each sample as well as one size of surface grid.
