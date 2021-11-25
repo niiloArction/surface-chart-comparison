@@ -7,6 +7,12 @@
         "initialRenderMs": 0
     },
     {
+        "columns": 100,
+        "rows": 100,
+        "fail": false,
+        "initialRenderMs": 105
+    },
+    {
         "columns": 1000,
         "rows": 1000,
         "fail": false,

@@ -55,6 +55,19 @@ Here are the results of static surface grid chart test with 2000x2000 data point
 
 ![](./bench/analysis/visualization-static-2000x2000.PNG)
 
+On average LightningChart JS was **~60x faster** than other charts. However, direct comparison can't be justified in this manner since LightningChart JS reaches much larger data sets than other charts.
+
+| Surface grid size | Non hardware accelerated charts average speed | Hardware accelerated charts speed | LightningChart speed |
+|:---|:---|:---|:----|
+| 100x100   | 517 ms | 331 ms | **105 ms** | 
+| 1000x1000 | 4583 ms | 584 ms | **125 ms** | 
+| 2000x2000 | 22659 ms | 1302 ms | **152 ms** | 
+| 4000x4000 | Fail | 4838 ms | **232 ms** | 
+| 6000x6000 | Fail | 9501 ms | **374 ms** |
+| 8000x8000 | Fail | Fail | **614 ms** |
+| 10000x10000 | Fail | Fail | **829 ms** |
+| 12000x12000 | Fail | Fail | **1260 ms** |
+
 ## Refreshing performance comparison breakdown
 
 We have a selected a single test from the set of refreshing performance tests that were run for each included chart library. This test is the same for each library and it highlights the performance differences most effectively.
@@ -65,14 +78,23 @@ Here are the results of refreshing (refresh rate = 10 Hz) surface grid chart tes
 |:---|:---|:---|
 | LightningChart JS | 10.0 | 15.5 |
 | Hardware accelerated competitor B | 2.2 | 100.0 |
-| Competitor A with no hardware acceleration | FAIL | FAIL |
-| Competitor C with no hardware acceleration | FAIL | FAIL |
+| Competitor A with no hardware acceleration | Fail | Fail |
+| Competitor C with no hardware acceleration | Fail | Fail |
 
 Below is a bar chart visualization of this same results table.
 
 ![](./bench/analysis/visualization-refresh-2000x2000.PNG)
 
 To help understand viewers to understand the effects of bad refresh rate and CPU usage measurements we have created a [YouTube video showcasing the charts](https://www.youtube.com/watch?v=eLTY2L2NARg) mentioned here undertaking the refreshing surface chart performance test (**not necessarily with same parameters as the test case highlighted above!**). In this video you can visible see how a low FPS looks on a web page, and respectively how a good FPS looks.
+
+On average, LightningChart JS processed data **430x faster** than non hardware accelerated charts and **18.2x faster** than other hardware accelerated charts.
+
+| JavaScript Chart Library | Max data process speed | Surface grid size | Achieved refresh rate |
+|:----|:----|:----|:----|
+| LightningChart JS | 160 M/s | 4000x4000 | 10 Hz |
+| Hardware accelerated competitor B | 8.8 M/s | 2000x2000 | 2.2 Hz |
+| Competitor A with no hardware acceleration | 600 k/s | 500x500 | 10 Hz |
+| Competitor C with no hardware acceleration | 148 k/s | 200x200 | 3.7 Hz |
 
 ## Appending performance comparison breakdown
 
@@ -85,7 +107,7 @@ Here are the results of appending surface grid chart test with sample size 500, 
 | LightningChart JS | 60.0 | 7.5 |
 | Hardware accelerated competitor B | 5.8 | 100.0 |
 | Competitor A with no hardware acceleration | 0.7 | 100.0 |
-| Competitor C with no hardware acceleration | FAIL | FAIL |
+| Competitor C with no hardware acceleration | Fail | Fail |
 
 Below is a bar chart visualization of this same results table.
 
@@ -93,7 +115,16 @@ Below is a bar chart visualization of this same results table.
 
 To help understand viewers to understand the effects of bad refresh rate and CPU usage measurements we have created a [YouTube video showcasing the charts](https://www.youtube.com/watch?v=mcKHL31nvU0) mentioned here undertaking the appending surface chart performance test (**not necessarily with same parameters as the test case highlighted above!**). In this video you can visible see how a low FPS looks on a web page, and respectively how a good FPS looks.
 
-### LightningChart JS Surface Chart Capabilities
+On average, LightningChart JS could manage appending applications with **1000x more data** than non hardware accelerated charts and **20x more data** than other hardware accelerated charts, while requiring **significantly less CPU power**.
+
+| JavaScript chart library | Heaviest test while keeping FPS > 10 | Incoming data points per second | CPU usage (%) |
+|:----|:----|:---|:---|
+| LightningChart JS | Sample size: 1000, Stream rate: 200 Hz | 200 000 | **5.3%** |
+| Hardware accelerated competitor B | Sample size: 100, Stream rate: 100 Hz | 10 000 | 100.0% |
+| Competitor A with no hardware acceleration | Sample size: 100, Stream rate: 10 Hz | 1 000 | 79.0% |
+| Competitor C with no hardware acceleration | Sample size: 100, Stream rate: 10 Hz | 1 000 | 100.0% |
+
+## LightningChart JS Surface Chart Capabilities
 
 As you might know, LightningChart JS utilizes hardware acceleration for its graphics. This results in three very particular performance properties:
 - **Low CPU usage**
@@ -109,7 +140,7 @@ It is worth noting, that this is not as simple as "if something is hardware acce
 
 We performed a separate test iteration with a more powerful PC (Ryzen 9 5900X, 64GB RAM, RTX 3080) to see what is the maximum capability of LightningChart JS Surface charts. Here's the results!
 
-#### Static surface chart
+### Static surface chart
 
 - Maximum data set size: **2 BILLION data points** (45000x45000)
 - Massive 10000x10000 surface grid can be loaded in less than a second! (768 ms)
@@ -117,7 +148,7 @@ We performed a separate test iteration with a more powerful PC (Ryzen 9 5900X, 6
 
 ![](pics/static-2.PNG)
 
-#### Refreshing surface chart
+### Refreshing surface chart
 
 - **LightningChart JS officially enables real-time refreshing surface data visualization**. From the performance results of older data visualization tools, it can be seen that they are simply not efficient enough with CPU usage to allow this kind of applications. Here is one performance test result we'd like to highlight:
 
@@ -131,7 +162,7 @@ Note, the CPU usage from LightningChart JS: **16.0 %**. This leaves plenty of po
 
 ![](pics/refresh.gif)
 
-#### Appending surface chart
+### Appending surface chart
 
 - **LightningChart JS officially enables real-time appending surface data visualization**. From the performance results of older data visualization tools, it can be seen that they are simply not efficient enough with CPU usage to allow this kind of applications. 
 
