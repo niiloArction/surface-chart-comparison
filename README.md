@@ -119,7 +119,7 @@ We performed a separate test iteration with a more powerful PC (Ryzen 9 5900X, 6
 
 #### Refreshing surface chart
 
-- **LightningChart JS officially enables real-time appending surface data visualization**. From the performance results of older data visualization tools, it can be seen that they are simply not efficient enough with CPU usage to allow this kind of applications. Here is one performance test result we'd like to highlight:
+- **LightningChart JS officially enables real-time refreshing surface data visualization**. From the performance results of older data visualization tools, it can be seen that they are simply not efficient enough with CPU usage to allow this kind of applications. Here is one performance test result we'd like to highlight:
 
 | JavaScript chart library | Refresh rate (Hz) | Surface grid dimensions | Total data points per refresh | Achieved refresh rate (FPS) | CPU usage (%) |
 |:---|:----|:----|:----|:----|:---|
@@ -133,7 +133,7 @@ Note, the CPU usage from LightningChart JS: **16.0 %**. This leaves plenty of po
 
 #### Appending surface chart
 
-- **LightningChart JS officially enables real-time refreshing surface data visualization**. From the performance results of older data visualization tools, it can be seen that they are simply not efficient enough with CPU usage to allow this kind of applications. 
+- **LightningChart JS officially enables real-time appending surface data visualization**. From the performance results of older data visualization tools, it can be seen that they are simply not efficient enough with CPU usage to allow this kind of applications. 
 
 **Why is this?**
 
