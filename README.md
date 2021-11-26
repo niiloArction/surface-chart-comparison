@@ -42,7 +42,7 @@ Surface dimensions are specified by the number of columns and rows, for example 
 
 ## Static performance comparison breakdown
 
-We have a selected a single test from the set of static performance tests that were run for each included chart library. This test is the same for each library and it highlights the performance differences most effectively.
+In static data visualization, the most important **measurable** performance attribute is how fast the chart is displayed to the user. We have a selected a single test from the set of static performance tests that were run for each included chart library. This test is the same for each library and it highlights the performance differences most effectively.
 
 Here are the results of static surface grid chart test with 2000x2000 data points.
 
@@ -68,9 +68,27 @@ On average LightningChart JS was **~60x faster** than other charts. However, dir
 | 10000x10000 | Fail | Fail | **829 ms** |
 | 12000x12000 | Fail | Fail | **1260 ms** |
 
+This is a good place to explain what does the **"loading speed"** measurement include. You might run into various claims of JavaScript loading speed in the internet, but we believe that there is only one correct way to measure this.
+
+> Loading speed is the time (seconds) which user has to wait for their chart to be visible on the web page.
+
+Some inconsistencies to this statement which you might have to look out for:
+
+- Setting up rendering frameworks and licenses, or any other steps which users have to do are included in loading time.
+    - For example, some manufacturers have omitted the initialization time of graphics engines from loading time, which doesn't make any sense from the perspective of the user and provides false results.
+- Loading speed includes any chart processing time between initiating the chart creation and displaying it.
+    - We have also identified loading speed claims which disregarded the processing time of chart method calls, once again producing completely irrelevant performance measurements.
+- In addition to this, loading speed **also includes any extra time that is required before the chart is visible**.
+    - Most JavaScript chart libraries have some internal events which can be used to track when the chart is done with processing data - this however, by no chance means that the data is visible to the user.
 ## Refreshing performance comparison breakdown
 
-We have a selected a single test from the set of refreshing performance tests that were run for each included chart library. This test is the same for each library and it highlights the performance differences most effectively.
+In refreshing chart applications, performance is measured as **refresh rate** (how fast data set can be refreshed, faster is better, unit is expressed as frequency Hz which means how many refreshes per every second) and **CPU usage** (% of processing power used, 0-100).
+
+In web data visualization, the CPU usage measurement is perhaps the most important performance metric which can be measured. This is because almost exclusively all processing on a web page is run in a single process and multiple CPU cores can't be easily utilized. In practice, this means if your web page has a single component which uses CPU extensively it will **ruin the performance of the entire web page**.
+
+> If your web page has a chart component which uses 100% of CPU, you can say goodbye to your good user experience.
+
+We have selected a single test from the set of refreshing performance tests that were run for each included chart library. This test is the same for each library and it highlights the performance differences most effectively.
 
 Here are the results of refreshing (refresh rate = 10 Hz) surface grid chart test with 2000x2000 data points.
 
